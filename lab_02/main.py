@@ -8,6 +8,8 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 import warnings
+from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import Perceptron
 warnings.filterwarnings("ignore")
 
 def read_prep_data():
@@ -60,7 +62,14 @@ def research_cross_val(X, y):
     range_step = np.arange(2, 15)
     classifiers = {
         'KNeighbors': KNeighborsClassifier(),
-        'Случайный лес': RandomForestClassifier()
+        'Случайный лес': RandomForestClassifier(),
+        "Перцептрон" : Perceptron(),
+        "Многослойный перцептрон" : MLPClassifier(activation='relu',
+                                                    solver='lbfgs',
+                                                    hidden_layer_sizes=(150,), 
+                                                    early_stopping=True,
+                                                    random_state=42,
+                                                    max_iter=100)
     }
     for name, clf in classifiers.items():
         print(f"Классификатор: {name}")
@@ -83,6 +92,6 @@ def research_cross_val(X, y):
         plt.clf()
 
 X, y = read_prep_data()
-research_random_forest(X, y)
-research_k_neighbours(X, y)
+#research_random_forest(X, y)
+#research_k_neighbours(X, y)
 research_cross_val(X, y)
